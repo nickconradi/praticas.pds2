@@ -8,13 +8,17 @@ import java.sql.SQLException;
 public class LoginDAO extends GenericDAO {
 
 	// Método para verificar se o banco esta online
-	public Boolean bancoOnline() throws SQLException {
+	public Boolean bancoOnline() {
 		Connection con = conectarDAO();
-		if (con!=null) {
-			conectarDAO().close();
+		if (con != null) {
+			try {
+				conectarDAO().close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			return true;
-		}
-		return false;
+		} else
+			return false;
 	}
 
 	// Método para autenticar usuários

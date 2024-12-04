@@ -54,9 +54,21 @@ public class ListarUsuarioController {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				//Selecionar o usuario
 				int linha = listarView.getLinhaSelecionada();
-				Long iduser = listarView.getValorLinhaColuna();
+				Long iduser = (long) listarView.getValorLinhaColuna(linha, 0);
+				try {
+					Usuario usuarioSelecionado = buscarUsuarioPorID(iduser);
+					abrirCadastroUsuario(usuarioSelecionado);
+				} catch (SQLException e1) {
+					new MensagemView(" Erro ao buscar usuario! ", 0);
+				}
+				
 			}
 		}
+	}
+	
+	private Usuario buscarUsuarioPorID(long iduser) throws SQLException {
+		UsuarioDAO dao = new UsuarioDAO();
+		return dao.selecionarUsuario(iduser);
 	}
 	
 	//Classe que trata os eventos de botao
@@ -90,5 +102,10 @@ public class ListarUsuarioController {
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	public void atualizarTabela(ArrayList<Usuario> novosUsuarios) {
+		listarView.atualizarTabelasUsuarios(novosUsuarios);
+		
 	}
 }
